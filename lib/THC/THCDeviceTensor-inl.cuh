@@ -172,7 +172,8 @@ template <typename T, int Dim,
           typename IndexT, template <typename U> class PtrTraits>
 __host__ __device__ bool
 THCDeviceTensor<T, Dim, IndexT, PtrTraits>::isContiguousDim(int i) const {
-  return (i == Dim - 1) || // just in case
+  return (getSize(i) == 1) ||
+    ((i == Dim - 1) && getStride(i) == 1) ||
     ((i < Dim - 1) &&
      ((getStride(i) / getStride(i + 1)) == getSize(i + 1)));
 }
